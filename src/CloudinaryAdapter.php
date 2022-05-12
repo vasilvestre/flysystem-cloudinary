@@ -7,7 +7,7 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
 
-class CloudinaryAdapter implements AdapterInterface
+class CloudinaryAdapter implements FilesystemAdapter
 {
     /** @var ApiFacade */
     private $api;
