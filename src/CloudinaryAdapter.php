@@ -3,9 +3,6 @@
 namespace Enl\Flysystem\Cloudinary;
 
 use Cloudinary\Api;
-use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
-use League\Flysystem\Adapter\Polyfill\StreamedCopyTrait;
-use League\Flysystem\Adapter\Polyfill\StreamedTrait;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
@@ -14,10 +11,6 @@ class CloudinaryAdapter implements AdapterInterface
 {
     /** @var ApiFacade */
     private $api;
-
-    use NotSupportingVisibilityTrait; // We have no visibility for paths, due all of them are public
-    use StreamedTrait; // We have no streaming in Cloudinary API, so we need this polyfill
-    use StreamedCopyTrait;
 
     public function __construct(ApiFacade $api)
     {
