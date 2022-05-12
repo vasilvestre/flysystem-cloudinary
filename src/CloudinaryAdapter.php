@@ -22,6 +22,11 @@ class CloudinaryAdapter implements FilesystemAdapter
         $this->normalizeMetadata($this->api->upload($path, $contents, true));
     }
 
+    public function writeStream(string $path, string $contents, Config $config): void
+    {
+        // @todo
+    }
+
     /**
      * Rename a file.
      */
@@ -35,7 +40,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         $this->api->deleteFile($path);
     }
 
-    public function deleteDir(string $dirname): void
+    public function deleteDirectory(string $dirname): void
     {
         $this->api->delete_resources_by_prefix(rtrim($dirname, '/').'/');
     }
@@ -46,6 +51,11 @@ class CloudinaryAdapter implements FilesystemAdapter
     }
 
     public function fileExists(string $path): bool
+    {
+        return $this->getMetadata($path);
+    }
+
+    public function directoryExists(string $path): bool
     {
         return $this->getMetadata($path);
     }
