@@ -14,14 +14,14 @@ class RenameTest extends ActionTestCase
     public function testReturnsFalseOnFailure()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->rename('old', 'new')->willThrow(Error::class);
-        $this->assertFalse($cloudinary->rename('old', 'new'));
+        $api->move('old', 'new')->willThrow(Error::class);
+        $this->assertFalse($cloudinary->move('old', 'new'));
     }
 
     public function testReturnsTrueOnSuccess()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->rename('old', 'new')->willReturn(['public_id' => 'new']);
-        $this->assertTrue($cloudinary->rename('old', 'new'));
+        $api->move('old', 'new')->willReturn(['public_id' => 'new']);
+        $this->assertTrue($cloudinary->move('old', 'new'));
     }
 }

@@ -19,121 +19,43 @@ class CloudinaryAdapter implements FilesystemAdapter
 
     public function write(string $path, string $contents, Config $config): void
     {
-        $overwrite = (bool)$config->get('disable_asserts');
-
-        try {
-            return $this->normalizeMetadata($this->api->upload($path, $contents, $overwrite));
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    public function update(string $path, string $contents, Config $config)
-    {
-        try {
-            return $this->normalizeMetadata($this->api->upload($path, $contents, true));
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    public function rename(string $path, string $newPath)
-    {
-        try {
-            return (bool) $this->api->rename($path, $newPath);
-        } catch (\Exception $e) {
-            return false;
-        }
+        $this->normalizeMetadata($this->api->upload($path, $contents, true));
     }
 
     /**
-     * Delete a file.
-     *
-     * @param string $path
-     *
-     * @return bool
+     * Rename a file.
      */
-    public function delete($path)
+    public function move(string $source, string $destination, Config $config): void
     {
-        try {
-            $response = $this->api->deleteFile($path);
-
-            return $response['result'] === 'ok';
-        } catch (\Exception $e) {
-            return false;
-        }
+        $this->api->move($source, $destination);
     }
 
-    /**
-     * Delete a directory.
-     *
-     * @param string $dirname
-     *
-     * @return bool
-     */
-    public function deleteDir($dirname)
+    public function delete(string $path): void
     {
-        try {
-            $response = $this->api->delete_resources_by_prefix(rtrim($dirname, '/').'/');
-
-            return is_array($response['deleted']);
-        } catch (Api\Error $e) {
-            return false;
-        }
+        $this->api->deleteFile($path);
     }
 
-    /**
-     * Create a directory.
-     * Cloudinary creates folders implicitly when you upload file with name 'path/file' and it has no API for folders
-     * creation. So that we need to just say "everything is ok, go on!".
-     *
-     * @param string $dirname directory name
-     * @param Config $config
-     *
-     * @return array|false
-     */
-    public function createDir($dirname, Config $config)
+    public function deleteDir(string $dirname): void
     {
-        return [
-            'path' => rtrim($dirname, '/').'/',
-            'type' => 'dir',
-        ];
+        $this->api->delete_resources_by_prefix(rtrim($dirname, '/').'/');
     }
 
-    /**
-     * Check whether a file exists.
-     *
-     * @param string $path
-     *
-     * @return array|bool|null
-     */
-    public function has($path)
+    public function createDirectory(string $dirname, Config $config): void
+    {
+        rtrim($dirname, '/').'/',
+    }
+
+    public function fileExists(string $path): bool
     {
         return $this->getMetadata($path);
     }
 
-    /**
-     * Read a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function read($path)
+    public function read(string $path): string
     {
-        if ($response = $this->readStream($path)) {
-            return ['contents' => stream_get_contents($response['stream']), 'path' => $response['path']];
-        }
-
-        return false;
+        return ['contents' => stream_get_contents($response['stream']), 'path' => $response['path']];
     }
 
-    /**
-     * @param $path
-     *
-     * @return array|bool
-     */
-    public function readStream($path)
+    public function readStream(string $path)
     {
         try {
             return [
@@ -152,16 +74,11 @@ class CloudinaryAdapter implements FilesystemAdapter
      *
      * Good news is Flysystem can handle this and will filter out subdirectory content
      * if $recursive is false.
-     *
-     * @param string $directory
-     * @param bool   $recursive
-     *
-     * @return array
      */
-    public function listContents($directory = '', $recursive = false)
+    public function listContents(string $path = '', bool $recursive = false): iterable
     {
         try {
-            return $this->addDirNames($this->doListContents($directory));
+            return $this->addDirNames($this->doListContents($path));
         } catch (\Exception $e) {
             return [];
         }
@@ -213,10 +130,6 @@ class CloudinaryAdapter implements FilesystemAdapter
 
     /**
      * Get all the meta data of a file or directory.
-     *
-     * @param string $path
-     *
-     * @return array|false
      */
     public function getMetadata($path)
     {
@@ -229,36 +142,24 @@ class CloudinaryAdapter implements FilesystemAdapter
 
     /**
      * Get all the meta data of a file or directory.
-     *
-     * @param string $path
-     *
-     * @return array|false
      */
-    public function getSize($path)
+    public function fileSize(string $path): FileAttributes
     {
         return $this->getMetadata($path);
     }
 
     /**
      * Get the mimetype of a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
      */
-    public function getMimetype($path)
+    public function mimeType(string $path): FileAttributes
     {
         return $this->getMetadata($path);
     }
 
     /**
      * Get the timestamp of a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
      */
-    public function getTimestamp($path)
+    public function getTimestamp(string $path): FileAttributes
     {
         return $this->getMetadata($path);
     }
