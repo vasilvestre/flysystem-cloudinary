@@ -17,16 +17,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         $this->api = $api;
     }
 
-    /**
-     * Write a new file.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param Config $config   Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function write(string $path, string $contents, Config $config)
+    public function write(string $path, string $contents, Config $config): void
     {
         $overwrite = (bool)$config->get('disable_asserts');
 
@@ -37,16 +28,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         }
     }
 
-    /**
-     * Update a file.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param Config $config   Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function update($path, $contents, Config $config)
+    public function update(string $path, string $contents, Config $config)
     {
         try {
             return $this->normalizeMetadata($this->api->upload($path, $contents, true));
@@ -55,15 +37,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         }
     }
 
-    /**
-     * Rename a file.
-     *
-     * @param string $path
-     * @param string $newPath
-     *
-     * @return bool
-     */
-    public function rename($path, $newPath)
+    public function rename(string $path, string $newPath)
     {
         try {
             return (bool) $this->api->rename($path, $newPath);
