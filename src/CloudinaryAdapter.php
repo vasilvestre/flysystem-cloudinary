@@ -26,7 +26,7 @@ class CloudinaryAdapter implements FilesystemAdapter
      *
      * @return array|false false on failure file meta data on success
      */
-    public function write($path, $contents, Config $config)
+    public function write(string $path, string $contents, Config $config)
     {
         $overwrite = (bool)$config->get('disable_asserts');
 
