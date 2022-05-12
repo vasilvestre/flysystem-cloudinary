@@ -42,7 +42,7 @@ class CloudinaryAdapter implements FilesystemAdapter
 
     public function createDirectory(string $dirname, Config $config): void
     {
-        rtrim($dirname, '/').'/',
+        rtrim($dirname, '/').'/';
     }
 
     public function fileExists(string $path): bool
