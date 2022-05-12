@@ -4,9 +4,9 @@ namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
 
 use League\Flysystem\Config;
 
-class CreateDirTest extends ActionTestCase
+class createDirectoryTest extends ActionTestCase
 {
-    public function createDirProvider()
+    public function createDirectoryProvider()
     {
         return [
             ['path', ['path' => 'path/', 'type' => 'dir']],
@@ -15,14 +15,14 @@ class CreateDirTest extends ActionTestCase
     }
 
     /**
-     * @dataProvider createDirProvider
+     * @dataProvider createDirectoryProvider
      * @param $path
      * @param $expected
      */
-    public function testCreateDir($path, $expected)
+    public function testcreateDirectory($path, $expected)
     {
         list($cloudinary,) = $this->buildAdapter();
 
-        $this->assertEquals($expected, $cloudinary->createDir($path, new Config()));
+        $this->assertEquals($expected, $cloudinary->createDirectory($path, new Config()));
     }
 }

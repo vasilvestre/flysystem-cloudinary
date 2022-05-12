@@ -12,7 +12,7 @@ class UpdateTest extends ActionTestCase
     {
         list($cloudinary, $api) = $this->buildAdapter();
         $api->upload(Argument::any(), Argument::any(), Argument::any())->willThrow(Error::class);
-        $this->assertFalse($cloudinary->update('path', 'contents', new Config()));
+        $this->assertFalse($cloudinary->write('path', 'contents', new Config()));
     }
 
     public function testReturnsNormalizedMetadataOnSuccess()
@@ -24,7 +24,7 @@ class UpdateTest extends ActionTestCase
             'bytes' => 123123
         ]);
 
-        $response = $cloudinary->update('test-path', 'contents', new Config());
+        $response = $cloudinary->write('test-path', 'contents', new Config());
 
         $this->assertArrayHasKey('path', $response);
         $this->assertEquals('test-path', $response['path']);

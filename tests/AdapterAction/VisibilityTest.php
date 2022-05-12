@@ -10,7 +10,7 @@ namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
  */
 class VisibilityTest extends ActionTestCase
 {
-    public function testGetVisibility()
+    public function testvisibility()
     {
         list($cloudinary) = $this->buildAdapter();
         $this->expectException(\LogicException::class);
@@ -21,6 +21,6 @@ class VisibilityTest extends ActionTestCase
     {
         list($cloudinary) = $this->buildAdapter();
         $this->expectException(\LogicException::class);
-        $cloudinary->getVisibility('path');
+        $cloudinary->visibility('path');
     }
 }
