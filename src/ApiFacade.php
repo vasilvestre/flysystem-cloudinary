@@ -145,11 +145,12 @@ class ApiFacade extends BaseApi
      *
      * @return array
      */
-    public function rename($path, $newPath)
+    public function rename($path, $newPath, $options = [])
     {
         $resource = Uploader::rename(
             $this->converter->pathToId($path),
-            $this->converter->pathToId($newPath)
+            $this->converter->pathToId($newPath),
+            $options
         );
 
         return $this->addPathToResource($resource);
