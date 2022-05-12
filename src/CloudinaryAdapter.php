@@ -3,7 +3,7 @@
 namespace Enl\Flysystem\Cloudinary;
 
 use Cloudinary\Api;
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
 
